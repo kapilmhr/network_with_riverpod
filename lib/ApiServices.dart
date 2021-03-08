@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_clean_architecture/utils/Exception.dart';

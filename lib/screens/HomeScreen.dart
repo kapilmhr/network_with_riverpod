@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:either_option/either_option.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/ApiUrl.dart';
 import 'package:flutter_clean_architecture/screens/FlowerWidget.dart';
