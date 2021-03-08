@@ -1,17 +1,57 @@
-# flutter_clean_architecture
+# Network Handling with Dio and management with Riverpod
 
-A new Flutter application with clean architecture.
+A new Application with network handle with future provider.
+
+
+<div align="center">
+    <img src="/snapshot/screenshot.png" width="250px"</img> 
+</div>
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```
+    flutter_riverpod: ^0.12.4.  //riverpod
+    dio: ^3.0.10                // dio for network
+    cached_network_image: ^2.5.0  // Network Image
+  ```
 
 A few resources to get you started if this is your first Flutter project:
-![Screenshot](/snapshot/screenshot.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Fetch Flowers from API
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```
+    Future<List<Flower>> getFlowers() async {
+    var dio = Dio();
+
+    try {
+      var response = await dio.get(ApiUrl.baseUrl + ApiUrl.flowers);
+      return FlowerList.fromJson(response.data).flowerLists;
+    } on DioError catch (e) {
+      print(getDioException(e));
+      throw Exception(getDioException(e));
+    }
+  }
+ ```
+ 
+ ### Future Provider
+ 
+ ```
+    final flowerProvider = FutureProvider.autoDispose<List<Flower>>((ref) {
+  return ApiServices().getFlowers();
+});
+```
+
+### Consumer
+
+```
+    Consumer(builder: (context, watch, _) {
+        var a = watch(flowerProvider);
+        return a.when(
+            data: (d) => buildListViews(d),
+            loading: () => Center(
+                  child: CircularProgressIndicator(),
+                ),
+            error: (e, st) => Text("error ${e}"));
+      })
+```
+
